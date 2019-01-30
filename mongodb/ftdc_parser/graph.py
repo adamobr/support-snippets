@@ -4,11 +4,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 
-matplotlib.rc('figure', figsize=(100, 10))
-
 
 # Data for plotting
 def create_graph(_x, _y, _title, _metric, _filename):
+  matplotlib.rc('figure', figsize=(100, 10))
 
   y = _y[2:]
   x = _x
@@ -24,17 +23,16 @@ def create_graph(_x, _y, _title, _metric, _filename):
 
   #print x_array
   #print y_array
-  print x_array
-  print y_array
+  #print x_array
+  #print y_array
   fig, ax = plt.subplots()
   ax.plot(x_array, y_array)
 
   ax.set(xlabel='Time (s)', ylabel=_metric,title=_title)
   ax.grid()
 
-  fig.savefig(_filename)
-
-
+  fig.savefig(_filename.replace('/','_'))
+  plt.close(fig)
 
 
 xx = []
@@ -49,4 +47,7 @@ for line in sys.stdin:
     yy = newline.split(';')
     if len(xx) > 1:
       print 'Generating ' + str(yy[:1])
-      create_graph(xx,yy,'Test',str(yy[:1][0]), str(yy[:1][0]).replace('.','_'))
+      try:
+        create_graph(xx,yy,'Test',str(yy[:1][0]), str(yy[:1][0]).replace('.','_'))
+      except:
+       print 'Error generating ' + str(yy[:1])
